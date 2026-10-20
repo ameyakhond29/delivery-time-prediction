@@ -49,6 +49,20 @@ The full analysis lives in a single notebook, [`delivery_time_prediction.ipynb`]
 6. **Interpretation & error analysis** — permutation importance, partial-dependence effects, and segment-wise errors. The ~1% freak-delay orders contribute 17% of total error and cannot be foreseen from placement-time data, so the report recommends a high-quantile (e.g. 75th-percentile) customer-facing estimate rather than a mean-case one.
 7. **Prediction** — the final model is retrained on all 8,000 training orders and writes `predictions.csv` for the 2,000 test orders (range 13.5–63.0 min, mean 31.6).
 
+## Demo — Streamlit App (`app.py`)
+
+Enter an order in the sidebar and get the typical ETA, the promised (75th-percentile) ETA, the very-late risk, and the reasons behind the estimate.
+
+**A routine order** — short trip, average kitchen, Friday dinner hour: 30 min typical ETA, 32 min promise, 1% late risk.
+
+![Streamlit demo — low-risk order](assets/streamlit-low-risk.png)
+
+**A risky order** — 9.9 km to the northern suburbs at lunch: 46 min typical ETA, 57% chance of exceeding 45 min, so the app recommends upgrading the courier vehicle, prioritising the order, or warning the customer early.
+
+![Streamlit demo — high-risk order](assets/streamlit-high-risk.png)
+
+Run it yourself: `streamlit run app.py` (see [How to Run](#how-to-run)).
+
 ## Beyond the Point Prediction (Section 8 of the notebook)
 
 The deliverable is a small system, not a single number:
@@ -68,6 +82,7 @@ The point model — and therefore `predictions.csv` — is unchanged: none of th
 delivery-time-prediction/
 ├── delivery_time_prediction.ipynb   # Complete analysis (EDA → modelling → explanation → prediction)
 ├── app.py                           # Streamlit demo: order in → ETA, promise, late-risk, reasons
+├── assets/                          # Streamlit demo screenshots used above
 ├── deliveries_train.csv             # 8,000 labelled orders
 ├── deliveries_test.csv              # 2,000 orders to predict
 ├── predictions.csv                  # Model output: order_id, predicted_minutes
